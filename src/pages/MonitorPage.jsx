@@ -1,26 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useWebsocket } from "../api/webSocket";
 import styled from "styled-components";
 import CradleInfo from "../components/Cradle/CradleInfo";
 import BatteryModules from "../components/Batterys/BatteryModules";
 import SideData from "../components/EventLog/SideData";
 import Modal from "../components/Modal/Modal";
-import { useSelector } from "react-redux";
+import { useWebsocketData } from "../hooks/websocket/useWebsocketData";
 
 const MonitorPage = () => {
-  useWebsocket();
+  useWebsocket(); // 웹소켓 연결
+  useWebsocketData(); // 웹소켓 데이터 수신 및 상태 관리 커스텀 훅
   // 모니터 페이지의 모든 컴포넌트를 렌더링하는 페이지
-  const data = useSelector((state) => state.data);
-  const isConnected = useSelector((state) => state.connection);
-  // const { isConnected } = useWebsocket();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // 웹소켓 데이터 정리는 이곳에서 시작
-  useEffect(() => {
-    if (isConnected) {
-      console.log("message: ", data.packId);
-    }
-  }, [isConnected, data]);
 
   return (
     <>

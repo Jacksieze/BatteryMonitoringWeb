@@ -1,39 +1,18 @@
-import { useState, useRef, createRef, useEffect } from "react";
+import { useState, useRef, createRef } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import BatteryCard from "./BatteryCard";
 import PaginationDots from "./PagingDots";
+import { useWindowWidth } from "../../hooks/windowWidth/useWindowWidth";
+import { debounce } from "../../util/debounce";
 
 const BatteryModules = ({ setIsModalOpen }) => {
   // 배터리 팩 총괄하는 컴포넌트
   const [currentPage, setCurrentPage] = useState(0);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    // 반응형 상태 관리
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  const windowWidth = useWindowWidth();
 
   const handleModalOpen = () => {
     setIsModalOpen(true);
-  };
-
-  const debounce = (func, delay) => {
-    // 스크롤 성능 최적화를 위한 debounce
-    let inDebounce;
-    return function () {
-      const context = this;
-      const args = arguments;
-      clearTimeout(inDebounce);
-      inDebounce = setTimeout(() => func.apply(context, args), delay);
-    };
   };
 
   const handleScroll = debounce((e) => {
@@ -51,6 +30,13 @@ const BatteryModules = ({ setIsModalOpen }) => {
       .fill()
       .map(() => createRef())
   );
+  const createCards = (cardCount, handleModalOpen, cardRefs) => {
+    return Array(cardCount)
+      .fill()
+      .map((_, index) => <BatteryCard key={index} handleModalOpen={handleModalOpen} ref={cardRefs.current[index]} />);
+  };
+
+  const cards = createCards(cardCount, handleModalOpen, cardRefs);
 
   const handlePaginationClick = (page) => {
     // 페이지네이션 클릭 시 해당 배터리 팩으로 이동
@@ -63,10 +49,6 @@ const BatteryModules = ({ setIsModalOpen }) => {
     }
     setCurrentPage(page);
   };
-
-  const cards = Array(cardCount)
-    .fill()
-    .map((_, index) => <BatteryCard key={index} handleModalOpen={handleModalOpen} ref={cardRefs.current[index]} />);
 
   return (
     <>

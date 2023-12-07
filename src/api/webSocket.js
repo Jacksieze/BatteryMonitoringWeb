@@ -10,7 +10,8 @@ export const useWebsocket = () => {
 
   //웹소켓 연결
   useEffect(() => {
-    const ws = new WebSocket("ws://192.168.219.113:8030/ws");
+    const ws = new WebSocket("ws://192.168.219.108:8030/ws");
+    // const ws = new WebSocket("ws://3.35.111.150:8030/ws");
 
     ws.onopen = () => {
       // setIsConnected(true);
@@ -20,7 +21,14 @@ export const useWebsocket = () => {
     ws.onmessage = (event) => {
       // setMessage(event.data);
       // console.log("message received: ", event.data);
-      dispatch(setData(event.data));
+      let message;
+      try {
+        message = JSON.parse(event.data);
+        dispatch(setData(message));
+      } catch (error) {
+        message = event.data;
+        console.log("message received: ", event.data);
+      }
     };
     ws.onclose = () => {
       // setIsConnected(false);
