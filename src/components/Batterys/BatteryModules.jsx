@@ -1,22 +1,26 @@
-import { useState, useRef, createRef } from "react";
-import styled from "styled-components";
+/* eslint-disable indent */
+
+import { useState, useRef, createRef, useMemo, useCallback } from "react";
+import Style from "./BatteryModules.style";
 import PropTypes from "prop-types";
 import BatteryCard from "./BatteryCard";
 import PaginationDots from "./PagingDots";
 import { useWindowWidth } from "../../hooks/windowWidth/useWindowWidth";
 import { debounce } from "../../util/debounce";
+import { useWebsocketData } from "../../hooks/websocket/useWebsocketData";
 
 const BatteryModules = ({ setIsModalOpen }) => {
+  const { packDataArray } = useWebsocketData();
   // 배터리 팩 총괄하는 컴포넌트
   const [currentPage, setCurrentPage] = useState(0);
   const windowWidth = useWindowWidth();
 
-  const handleModalOpen = () => {
+  const handleModalOpen = useCallback(() => {
     setIsModalOpen(true);
-  };
+  }, [setIsModalOpen]);
 
   const handleScroll = debounce((e) => {
-    // 모바일 화면에서 스크롤 이벤트 발생 시 위치 계산
+    // 모바일 화면에서 스크롤 이벤트 발생 시 위치 계산s
     const element = e.target;
     const nextPage = Math.round((element.scrollLeft / element.scrollWidth) * cardCount);
     setCurrentPage(nextPage);
@@ -30,13 +34,29 @@ const BatteryModules = ({ setIsModalOpen }) => {
       .fill()
       .map(() => createRef())
   );
-  const createCards = (cardCount, handleModalOpen, cardRefs) => {
-    return Array(cardCount)
-      .fill()
-      .map((_, index) => <BatteryCard key={index} handleModalOpen={handleModalOpen} ref={cardRefs.current[index]} />);
-  };
 
-  const cards = createCards(cardCount, handleModalOpen, cardRefs);
+  const sortedPackDataArray = useMemo(() => {
+    return [...packDataArray].sort((a, b) => a.cradleId - b.cradleId);
+  }, [packDataArray]);
+
+  const cradles = useMemo(
+    () =>
+      Array.from({ length: cardCount }, (_, index) => {
+        const pack = sortedPackDataArray[index] || { data: null };
+        console.log(pack);
+        return (
+          <Cradle key={index} cradleId={index}>
+            <BatteryCard
+              key={index}
+              data={pack.data}
+              handleModalOpen={() => handleModalOpen(pack.packId)}
+              ref={cardRefs.current[index]}
+            />
+          </Cradle>
+        );
+      }),
+    [sortedPackDataArray, cardCount, handleModalOpen]
+  );
 
   const handlePaginationClick = (page) => {
     // 페이지네이션 클릭 시 해당 배터리 팩으로 이동
@@ -52,9 +72,9 @@ const BatteryModules = ({ setIsModalOpen }) => {
 
   return (
     <>
-      <Container onScroll={handleScroll}>
-        <CradleWrapper>{cards}</CradleWrapper>
-      </Container>
+      <Style.Container onScroll={handleScroll}>
+        <Style.CradleWrapper>{cradles}</Style.CradleWrapper>
+      </Style.Container>
       {windowWidth <= 500 && (
         <PaginationDots currentPage={currentPage} totalPages={cardCount} onPageChange={handlePaginationClick} />
       )}
@@ -68,31 +88,7 @@ BatteryModules.propTypes = {
 
 export default BatteryModules;
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px;
-  max-width: 594px;
-  @media (${({ theme }) => theme.media.desktop}) {
-    max-width: 100%;
-    overflow-x: auto;
-    gap: 20px;
-    padding: 16px 20px;
-    justify-content: flex-start;
-    flex-wrap: nowrap;
-  }
-  @media (${({ theme }) => theme.media.mobile}) {
-    padding: 16px 20px 20px;
-  }
-`;
-const CradleWrapper = styled.div`
-  width: 1240px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 40px;
-  @media (${({ theme }) => theme.media.desktop}) {
-    flex-wrap: nowrap;
-  }
-`;
+const Cradle = ({ children }) => <Style.CradleBox>{children}</Style.CradleBox>;
+Cradle.propTypes = {
+  children: PropTypes.node,
+};

@@ -5,11 +5,9 @@ import CradleInfo from "../components/Cradle/CradleInfo";
 import BatteryModules from "../components/Batterys/BatteryModules";
 import SideData from "../components/EventLog/SideData";
 import Modal from "../components/Modal/Modal";
-import { useWebsocketData } from "../hooks/websocket/useWebsocketData";
 
 const MonitorPage = () => {
   useWebsocket(); // 웹소켓 연결
-  useWebsocketData(); // 웹소켓 데이터 수신 및 상태 관리 커스텀 훅
   // 모니터 페이지의 모든 컴포넌트를 렌더링하는 페이지
   const [isModalOpen, setIsModalOpen] = useState(false);
 

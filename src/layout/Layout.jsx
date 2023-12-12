@@ -3,9 +3,12 @@ import Logo from "../assets/ci-blue-out.png";
 import MonitorPage from "../pages/MonitorPage";
 import "boxicons";
 import { useNavigate } from "react-router-dom";
+import { useWebsocketData } from "../hooks/websocket/useWebsocketData";
 
 const Layout = () => {
   const navigate = useNavigate();
+  useWebsocketData();
+  const { isConnected } = useWebsocketData();
 
   const handleLogout = () => {
     // 로그아웃 핸들러
@@ -17,13 +20,16 @@ const Layout = () => {
 
   return (
     <>
-      <Style.Header>
+      <Style.Header $connection={isConnected}>
         <h1>
           <img src={Logo} alt="mobi logo" />
         </h1>
-        <button onClick={handleLogout}>
-          <box-icon name="exit" color="#ffffff"></box-icon>
-        </button>
+        <div>
+          <p>{isConnected ? "Server Connected" : "Server Disconnected"}</p>
+          <button onClick={handleLogout}>
+            <box-icon name="exit" color="#ffffff"></box-icon>
+          </button>
+        </div>
       </Style.Header>
       <Style.Main>
         <MonitorPage />

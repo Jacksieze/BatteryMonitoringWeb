@@ -22,19 +22,32 @@ const Header = styled.header`
       width: 100%;
     }
   }
-  & > button {
-    background-color: ${({ theme }) => theme.colors.primary};
-    border: none;
-    border-radius: 6px;
-    padding: 8px;
-    color: ${({ theme }) => theme.colors.white};
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    font-size: 14px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    &:hover {
-      background-color: ${({ theme }) => theme.colors.tertiary};
+  & > div {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    & > p {
+      font-size: 18px;
+      font-weight: 700;
+      color: ${({ theme, $connection }) => ($connection ? theme.colors.positive : theme.colors.negative)};
+      @media (${({ theme }) => theme.media.mobile}) {
+        font-size: 13px;
+      }
+    }
+    & > button {
+      background-color: ${({ theme }) => theme.colors.primary};
+      border: none;
+      border-radius: 6px;
+      padding: 8px;
+      color: ${({ theme }) => theme.colors.white};
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        background-color: ${({ theme }) => theme.colors.tertiary};
+      }
     }
   }
   @media (${({ theme }) => theme.media.mobile}) {
