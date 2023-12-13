@@ -12,13 +12,13 @@ const ModalHead = ({ handleModalClose, packData }) => {
           <span>배터리 {packData ? packData.packId : "--"}</span>
         </div>
         <div>
+          <span>상태 :</span>
           <span
             style={
               packData ? (packData.batteryStatus === 1 ? { color: "green" } : { color: "red" }) : { color: "#222" }
             }>
-            상태 :
+            {packData ? (packData.batteryStatus === 1 ? "충전" : "방전") : "--"}
           </span>
-          <span>{packData ? (packData.batteryStatus === 1 ? "충전" : "방전") : "--"}</span>
         </div>
       </StatusContainer>
       <LogoBox>

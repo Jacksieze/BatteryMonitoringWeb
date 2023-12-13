@@ -40,7 +40,7 @@ const BatteryModules = ({ handleModalOpen }) => {
           <BatteryCard
             key={index}
             data={pack}
-            handleModalOpen={() => handleModalOpen(pack && pack.packId)}
+            handleModalOpen={() => handleModalOpen(pack)}
             ref={cardRefs.current[index]}
           />
         );

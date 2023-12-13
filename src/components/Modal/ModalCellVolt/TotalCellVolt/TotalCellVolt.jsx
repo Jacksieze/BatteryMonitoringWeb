@@ -3,10 +3,8 @@ import PropTypes from "prop-types";
 import GaugeComponent from "react-gauge-component";
 import CellWrapper from "../CellWrapper/CellWrapper";
 
-const TotalCellVolt = ({ totalCellVolt, randomCellVolt }) => {
+const TotalCellVolt = ({ totalCellVolt, packData }) => {
   // 전체 셀 전압을 표현하는 컴포넌트
-  const maxCellVolt = Math.max(...randomCellVolt);
-  const minCellVolt = Math.min(...randomCellVolt);
 
   return (
     <Container>
@@ -22,7 +20,6 @@ const TotalCellVolt = ({ totalCellVolt, randomCellVolt }) => {
             },
             tickLabels: {
               type: "inner",
-              // ticks: [{ value: 36.4 }, { value: 58.8 }],
               defaultTickValueConfig: {
                 formatTextValue: (value) => `${value}V`,
                 maxDecimalDigits: 1,
@@ -54,11 +51,11 @@ const TotalCellVolt = ({ totalCellVolt, randomCellVolt }) => {
       <MinMaxVolt>
         <MinMaxBox>
           <h3>최소 전압 :</h3>
-          <CellWrapper minCellVolt={minCellVolt} />
+          <CellWrapper minCellVolt={packData.minCellVoltage} />
         </MinMaxBox>
         <MinMaxBox>
           <h3>최대 전압 :</h3>
-          <CellWrapper maxCellVolt={maxCellVolt} />
+          <CellWrapper maxCellVolt={packData.maxCellVoltage} />
         </MinMaxBox>
       </MinMaxVolt>
     </Container>
@@ -67,7 +64,7 @@ const TotalCellVolt = ({ totalCellVolt, randomCellVolt }) => {
 
 TotalCellVolt.propTypes = {
   totalCellVolt: PropTypes.number,
-  randomCellVolt: PropTypes.array,
+  packData: PropTypes.object,
 };
 
 export default TotalCellVolt;

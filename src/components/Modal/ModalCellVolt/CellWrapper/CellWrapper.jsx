@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
-const CellWrapper = ({ randomCellVolt, cellNumber, minCellVolt, maxCellVolt }) => {
+const CellWrapper = ({ cellVolt, cellNumber, minCellVolt, maxCellVolt }) => {
   // 각 셀 전압 상태를 표현하는 컴포넌트
-  const percentage = (randomCellVolt / 5) * 100;
+  const percentage = (cellVolt / 5) * 100;
   const percentageMin = (minCellVolt / 5) * 100;
   const percentageMax = (maxCellVolt / 5) * 100;
 
@@ -18,7 +18,7 @@ const CellWrapper = ({ randomCellVolt, cellNumber, minCellVolt, maxCellVolt }) =
       ) : (
         <Cell>
           <div style={{ width: `${percentage}%` }}></div>
-          <span>{randomCellVolt} V</span>
+          <span>{cellVolt} V</span>
         </Cell>
       )}
     </Container>
@@ -26,7 +26,7 @@ const CellWrapper = ({ randomCellVolt, cellNumber, minCellVolt, maxCellVolt }) =
 };
 
 CellWrapper.propTypes = {
-  randomCellVolt: PropTypes.number,
+  cellVolt: PropTypes.number,
   cellNumber: PropTypes.number,
   minCellVolt: PropTypes.number,
   maxCellVolt: PropTypes.number,
