@@ -35,6 +35,11 @@ const CardHeader = styled.div`
     color: ${({ theme }) => theme.colors.white};
     font-size: 20px;
   }
+  & > h4 {
+    margin-right: 20px;
+    color: ${({ theme }) => theme.colors.white};
+    font-size: 18px;
+  }
   @media (${({ theme }) => theme.media.tablet}) {
     height: 40px;
     & > h3 {

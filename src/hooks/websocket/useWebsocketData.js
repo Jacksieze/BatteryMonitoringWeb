@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setData } from "../../store/batteryData";
 
@@ -7,13 +7,6 @@ export const useWebsocketData = () => {
   const isConnected = useSelector((state) => state.connection);
   const dispatch = useDispatch();
   const wasConnectedRef = useRef(isConnected);
-
-  const packDataArray = useMemo(() => {
-    if (!packData) return [];
-    return Object.entries(packData).map(([key, value]) => {
-      return { id: key, data: value };
-    });
-  }, [packData]);
 
   useEffect(() => {
     if (isConnected) {
@@ -25,5 +18,5 @@ export const useWebsocketData = () => {
     wasConnectedRef.current = isConnected;
   }, [isConnected, packData, dispatch]);
 
-  return { packData, packDataArray, isConnected };
+  return { packData, isConnected };
 };
