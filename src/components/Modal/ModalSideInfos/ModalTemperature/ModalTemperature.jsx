@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
-const ModalTemperature = () => {
-  // 배터리 팩의 온도를 표현하는 컴포넌트
-  const [randomTemp, setRandomTemp] = useState(0);
+const ModalTemperature = ({ packData }) => {
+  // // 배터리 팩의 온도를 표현하는 컴포넌트
+  const [temperature, setTemperature] = useState(0);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setRandomTemp(Math.floor(Math.random() * 20) + 12);
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+    setTemperature(packData.temperature);
+  }, [packData]);
+  // const [randomTemp, setRandomTemp] = useState(0);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setRandomTemp(Math.floor(Math.random() * 20) + 12);
+  //   }, 1000);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   return (
     <Container>
       <h3>온도 : </h3>
-      <span>{randomTemp} C˚</span>
+      <span>{temperature} C˚</span>
     </Container>
   );
+};
+
+ModalTemperature.propTypes = {
+  packData: PropTypes.object,
 };
 
 export default ModalTemperature;

@@ -7,10 +7,8 @@ import BatteryCard from "./BatteryCard";
 import PaginationDots from "./PagingDots";
 import { useWindowWidth } from "../../hooks/windowWidth/useWindowWidth";
 import { debounce } from "../../util/debounce";
-import { useWebsocketData } from "../../hooks/websocket/useWebsocketData";
 
-const BatteryModules = ({ handleModalOpen }) => {
-  const { packData } = useWebsocketData();
+const BatteryModules = ({ handleModalOpen, packData }) => {
   const cardCount = 4;
   const cardRefs = useRef(
     // 배터리 팩 카드의 위치를 계산하기 위한 useRef
@@ -35,12 +33,11 @@ const BatteryModules = ({ handleModalOpen }) => {
       Array.from({ length: cardCount }, (_, index) => {
         const packKey = `packData${index + 1}`;
         const pack = packData[packKey] || null;
-        console.log(pack);
         return (
           <BatteryCard
             key={index}
             data={pack}
-            handleModalOpen={() => handleModalOpen(pack)}
+            handleModalOpen={() => handleModalOpen(pack.packId)}
             ref={cardRefs.current[index]}
           />
         );
@@ -74,6 +71,7 @@ const BatteryModules = ({ handleModalOpen }) => {
 
 BatteryModules.propTypes = {
   handleModalOpen: PropTypes.func,
+  packData: PropTypes.object,
 };
 
 export default BatteryModules;

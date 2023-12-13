@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Logo from "../../../assets/ci-blue-out.png";
@@ -5,19 +6,23 @@ import "boxicons";
 
 const ModalHead = ({ handleModalClose, packData }) => {
   // 모달 헤더 컴포넌트
+  const [packId, setPackId] = useState("--");
+  const [batteryStatus, setBatteryStatus] = useState("--");
+
+  useEffect(() => {
+    setPackId(packData.packId);
+    setBatteryStatus(packData.batteryStatus);
+  }, [packData]);
   return (
     <>
       <StatusContainer>
         <div>
-          <span>배터리 {packData ? packData.packId : "--"}</span>
+          <span>배터리 {packId}</span>
         </div>
         <div>
           <span>상태 :</span>
-          <span
-            style={
-              packData ? (packData.batteryStatus === 1 ? { color: "green" } : { color: "red" }) : { color: "#222" }
-            }>
-            {packData ? (packData.batteryStatus === 1 ? "충전" : "방전") : "--"}
+          <span style={packData ? (batteryStatus === 1 ? { color: "green" } : { color: "red" }) : { color: "#222" }}>
+            {packData ? (batteryStatus === 1 ? "충전" : "방전") : "--"}
           </span>
         </div>
       </StatusContainer>

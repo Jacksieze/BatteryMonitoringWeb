@@ -1,25 +1,31 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import GaugeComponent from "react-gauge-component";
 
-const ModalAmpere = () => {
+const ModalAmpere = ({ packData }) => {
   // 모달창의 전류 컴포넌트
-  // 랜덤 전류값
-  const [randomAmpere, setRandomAmpere] = useState(0);
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setRandomAmpere(Number((Math.random() * 200 - 100).toFixed(2)));
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, []);
+    setCurrent(packData.current);
+  }, [packData]);
+  // 랜덤 전류값
+  // const [randomAmpere, setRandomAmpere] = useState(0);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setRandomAmpere(Number((Math.random() * 200 - 100).toFixed(2)));
+  //   }, 1000);
+  //   return () => clearInterval(intervalId);
+  // }, []);
   // -----------------------------
 
   return (
     <Container>
       <GaugeComponent
         id="Ampere"
-        value={randomAmpere}
+        value={current}
         maxValue={100}
         minValue={-100}
         type="semicircle"
@@ -52,10 +58,14 @@ const ModalAmpere = () => {
       />
       <AmpereText>
         <h1>전류 : </h1>
-        <span>{randomAmpere} A</span>
+        <span>{current} A</span>
       </AmpereText>
     </Container>
   );
+};
+
+ModalAmpere.propTypes = {
+  packData: PropTypes.object,
 };
 
 export default ModalAmpere;

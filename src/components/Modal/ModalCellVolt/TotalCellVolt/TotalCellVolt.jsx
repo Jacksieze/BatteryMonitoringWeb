@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import GaugeComponent from "react-gauge-component";
@@ -5,6 +6,17 @@ import CellWrapper from "../CellWrapper/CellWrapper";
 
 const TotalCellVolt = ({ totalCellVolt, packData }) => {
   // 전체 셀 전압을 표현하는 컴포넌트
+  const [minCellNumber, setMinCellNumber] = useState("--");
+  const [minCellVolt, setMinCellVolt] = useState("--");
+  const [maxCellNumber, setMaxCellNumber] = useState("--");
+  const [maxCellVolt, setMaxCellVolt] = useState("--");
+
+  useEffect(() => {
+    setMinCellNumber(packData.minCellNumber);
+    setMinCellVolt(packData.minCellVoltage / 1000);
+    setMaxCellNumber(packData.maxCellNumber);
+    setMaxCellVolt(packData.maxCellVoltage / 1000);
+  }, [packData]);
 
   return (
     <Container>
@@ -51,11 +63,11 @@ const TotalCellVolt = ({ totalCellVolt, packData }) => {
       <MinMaxVolt>
         <MinMaxBox>
           <h3>최소 전압 :</h3>
-          <CellWrapper minCellVolt={packData.minCellVoltage} />
+          <CellWrapper cellNumber={minCellNumber} minCellVolt={minCellVolt} />
         </MinMaxBox>
         <MinMaxBox>
           <h3>최대 전압 :</h3>
-          <CellWrapper maxCellVolt={packData.maxCellVoltage} />
+          <CellWrapper cellNumber={maxCellNumber} maxCellVolt={maxCellVolt} />
         </MinMaxBox>
       </MinMaxVolt>
     </Container>

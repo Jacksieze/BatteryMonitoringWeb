@@ -5,8 +5,9 @@ import ModalHead from "./ModalHead/ModalHead";
 import ModalCellVolt from "./ModalCellVolt/ModalCellVolt";
 import ModalSideInfos from "./ModalSideInfos/ModalSideInfos";
 
-const Modal = ({ setIsModalOpen, packData }) => {
+const Modal = ({ setIsModalOpen, packData, packId }) => {
   // 모달 컴포넌트
+  const data = packData[`packData${packId}`];
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -26,11 +27,11 @@ const Modal = ({ setIsModalOpen, packData }) => {
     <Style.Modal onClick={handleModalClose}>
       <Style.ModalContainer onClick={handleModalClick}>
         <Style.ModalHeader>
-          <ModalHead handleModalClose={handleModalClose} packData={packData} />
+          <ModalHead handleModalClose={handleModalClose} packData={data} />
         </Style.ModalHeader>
         <Style.ModalBody>
-          <ModalCellVolt packData={packData} />
-          <ModalSideInfos packData={packData} />
+          <ModalCellVolt packData={data} />
+          <ModalSideInfos packData={data} />
         </Style.ModalBody>
       </Style.ModalContainer>
     </Style.Modal>
@@ -39,6 +40,7 @@ const Modal = ({ setIsModalOpen, packData }) => {
 
 Modal.propTypes = {
   setIsModalOpen: PropTypes.func,
+  packId: PropTypes.object,
   packData: PropTypes.object,
 };
 

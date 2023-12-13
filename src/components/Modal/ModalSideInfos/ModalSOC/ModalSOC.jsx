@@ -1,14 +1,19 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import Battery from "./Battery";
 
-const ModalSOC = () => {
+const ModalSOC = ({ packData }) => {
   // 모달의 SOC를 렌더링하는 컴포넌트
   return (
     <Container>
-      <Battery />
+      <Battery packData={packData} />
       <h1>SoC</h1>
     </Container>
   );
+};
+
+ModalSOC.propTypes = {
+  packData: PropTypes.object,
 };
 
 export default ModalSOC;

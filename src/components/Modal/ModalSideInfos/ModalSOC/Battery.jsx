@@ -1,18 +1,24 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
-const Battery = () => {
+const Battery = ({ packData }) => {
   // 배터리 용량을 표현하는 컴포넌트
-  // 랜덤값으로 테스트
   const [level, setLevel] = useState(0);
-  const random = Math.floor(Math.random() * 100);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setLevel(random);
-    }, 1000);
-    return () => clearInterval(intervalId);
-  }, [random]);
+    setLevel(packData.soc);
+  }, [packData]);
+  // 랜덤값으로 테스트
+  // const [level, setLevel] = useState(0);
+  // const random = Math.floor(Math.random() * 100);
+
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setLevel(random);
+  //   }, 1000);
+  //   return () => clearInterval(intervalId);
+  // }, [random]);
   // -----------------------------
 
   return (
@@ -21,6 +27,10 @@ const Battery = () => {
       <span>{level} %</span>
     </Container>
   );
+};
+
+Battery.propTypes = {
+  packData: PropTypes.object,
 };
 
 export default Battery;

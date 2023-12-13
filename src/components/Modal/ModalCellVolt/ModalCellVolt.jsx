@@ -7,33 +7,20 @@ import TotalCellVolt from "./TotalCellVolt/TotalCellVolt";
 const ModalCellVolt = ({ packData }) => {
   // 배터리 팩의 셀 전압 모달 컴포넌트
   const [isLoading, setIsLoading] = useState(true);
+  const [cellVolt, setCellVolt] = useState(Array(14).fill("--"));
+  const [totalCellVolt, setTotalCellVolt] = useState("--");
 
   useEffect(() => {
-    // 모달 컴포넌트가 렌더링 될 때 1초 후에 로딩이 완료되도록 설정
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    setIsLoading(true);
   }, []);
 
-  const cellVolt = packData ? packData.cellVoltage : {};
-  const totalCellVolt = packData ? packData.packVoltage : null;
-
-  // ----------------------------- 렌덤한 셀 전압 생성 -----------------------------
-  // const [randomCellVolt, setRandomCellVolt] = useState([]);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setRandomCellVolt(
-  //       Array(14)
-  //         .fill()
-  //         .map((_) => Number((Math.random() * 1 + 3).toFixed(4)))
-  //     );
-  //   }, 1000);
-  //   return () => clearInterval(intervalId);
-  // }, []);
-
-  // const totalCellVolt = Number(randomCellVolt.reduce((acc, cur) => acc + cur, 0).toFixed(1));
-  // ---------------------------------------------------------------------------
+  useEffect(() => {
+    if (packData) {
+      setIsLoading(false);
+      setCellVolt(packData.cellVoltage);
+      setTotalCellVolt(packData.packVoltage);
+    }
+  }, [packData]);
 
   return (
     <Style.Container>
@@ -42,7 +29,11 @@ const ModalCellVolt = ({ packData }) => {
           <p style={{ fontSize: 20 }}>불러오는 중 입니다...</p>
         ) : (
           Object.entries(cellVolt).map(([cell, voltage], index) => (
-            <CellWrapper key={index} cellNumber={cell.replace("cell", "")} cellVolt={voltage} />
+            <CellWrapper
+              key={index}
+              cellNumber={packData ? cell.replace("cell", "") : index + 1}
+              cellVolt={voltage / 1000}
+            />
           ))
         )}
       </Style.CellContainer>
@@ -50,7 +41,7 @@ const ModalCellVolt = ({ packData }) => {
         {isLoading ? (
           <p style={{ fontSize: 20, textAlign: "center" }}>잠시만 기다려주세요...</p>
         ) : (
-          <TotalCellVolt totalCellVolt={totalCellVolt} packData={packData} />
+          <TotalCellVolt totalCellVolt={totalCellVolt / 10} packData={packData} />
         )}
       </Style.VoltBox>
     </Style.Container>
