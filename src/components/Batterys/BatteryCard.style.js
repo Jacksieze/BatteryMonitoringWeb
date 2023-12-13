@@ -78,7 +78,13 @@ const CardContent = styled.div`
     }
   }
 `;
+const CardLoading = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+`;
 
-const Style = { Container, CardHeader, CardBody, CardContent };
+const Style = { Container, CardHeader, CardBody, CardContent, CardLoading };
 
 export default Style;

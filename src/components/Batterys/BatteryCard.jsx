@@ -21,7 +21,7 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
       </Style.CardHeader>
       <Style.CardBody>
         {isLoading ? (
-          <p style={{ display: "flex", justifyContent: "center" }}>연결중입니다...</p>
+          <Style.CardLoading>연결중입니다...</Style.CardLoading>
         ) : (
           <>
             <Style.CardContent>

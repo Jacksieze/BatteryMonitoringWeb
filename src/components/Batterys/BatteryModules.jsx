@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 
-import { useState, useRef, createRef, useMemo, useCallback } from "react";
+import { useState, useRef, createRef, useMemo } from "react";
 import Style from "./BatteryModules.style";
 import PropTypes from "prop-types";
 import BatteryCard from "./BatteryCard";
@@ -9,7 +9,7 @@ import { useWindowWidth } from "../../hooks/windowWidth/useWindowWidth";
 import { debounce } from "../../util/debounce";
 import { useWebsocketData } from "../../hooks/websocket/useWebsocketData";
 
-const BatteryModules = ({ setIsModalOpen }) => {
+const BatteryModules = ({ handleModalOpen }) => {
   const { packData } = useWebsocketData();
   const cardCount = 4;
   const cardRefs = useRef(
@@ -21,10 +21,6 @@ const BatteryModules = ({ setIsModalOpen }) => {
   // 배터리 팩 총괄하는 컴포넌트
   const [currentPage, setCurrentPage] = useState(0);
   const windowWidth = useWindowWidth();
-
-  const handleModalOpen = useCallback(() => {
-    setIsModalOpen(true);
-  }, [setIsModalOpen]);
 
   const handleScroll = debounce((e) => {
     // 모바일 화면에서 스크롤 이벤트 발생 시 위치 계산
@@ -77,7 +73,7 @@ const BatteryModules = ({ setIsModalOpen }) => {
 };
 
 BatteryModules.propTypes = {
-  setIsModalOpen: PropTypes.func,
+  handleModalOpen: PropTypes.func,
 };
 
 export default BatteryModules;

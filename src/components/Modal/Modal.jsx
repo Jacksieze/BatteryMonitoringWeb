@@ -5,7 +5,7 @@ import ModalHead from "./ModalHead/ModalHead";
 import ModalCellVolt from "./ModalCellVolt/ModalCellVolt";
 import ModalSideInfos from "./ModalSideInfos/ModalSideInfos";
 
-const Modal = ({ setIsModalOpen }) => {
+const Modal = ({ setIsModalOpen, packData }) => {
   // 모달 컴포넌트
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -26,11 +26,11 @@ const Modal = ({ setIsModalOpen }) => {
     <Style.Modal onClick={handleModalClose}>
       <Style.ModalContainer onClick={handleModalClick}>
         <Style.ModalHeader>
-          <ModalHead handleModalClose={handleModalClose} />
+          <ModalHead handleModalClose={handleModalClose} packData={packData} />
         </Style.ModalHeader>
         <Style.ModalBody>
-          <ModalCellVolt />
-          <ModalSideInfos />
+          <ModalCellVolt packData={packData} />
+          <ModalSideInfos packData={packData} />
         </Style.ModalBody>
       </Style.ModalContainer>
     </Style.Modal>
@@ -39,6 +39,7 @@ const Modal = ({ setIsModalOpen }) => {
 
 Modal.propTypes = {
   setIsModalOpen: PropTypes.func,
+  packData: PropTypes.object,
 };
 
 export default Modal;
