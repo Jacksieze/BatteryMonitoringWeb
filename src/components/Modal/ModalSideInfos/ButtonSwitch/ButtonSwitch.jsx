@@ -1,18 +1,70 @@
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import { useWebsocket } from "../../../../api/webSocket";
 
-const ButtonSwitch = () => {
+const ButtonSwitch = ({ packData }) => {
+  const { socket } = useWebsocket();
+  const [chargeSwitch, setChargeSwitch] = useState(0);
+  const [dischargeSwitch, setDischargeSwitch] = useState(0);
+
+  useEffect(() => {
+    setChargeSwitch(packData.CHGMOS_status);
+    setDischargeSwitch(packData.DSGMOS_status);
+  }, [packData]);
+
+  const handleChargeSwitch = () => {
+    setChargeSwitch((prev) => {
+      const next = prev === 0 ? 1 : 0;
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(
+          JSON.stringify({
+            packId: packData.packId,
+            cradleId: packData.cradleId,
+            chgStatus: next,
+            dsgStatus: packData.DSGMOS_status,
+          })
+        );
+      }
+      return next;
+    });
+  };
+
+  const handleDischargeSwitch = () => {
+    setDischargeSwitch((prev) => {
+      const next = prev === 0 ? 1 : 0;
+      if (socket && socket.readyState === WebSocket.OPEN) {
+        socket.send(
+          JSON.stringify({
+            packId: packData.packId,
+            cradleId: packData.cradleId,
+            chgStatus: packData.CHGMOS_status,
+            dsgStatus: next,
+          })
+        );
+      }
+      return next;
+    });
+  };
+
+  console.log(chargeSwitch, dischargeSwitch);
+
   return (
     <Container>
       <ToggleWrapper>
         <Label>충전</Label>
-        <Toggle type="checkbox" label="충전" />
+        <Toggle type="checkbox" label="충전" checked={chargeSwitch} onChange={handleChargeSwitch} />
       </ToggleWrapper>
       <ToggleWrapper>
         <Label>방전</Label>
-        <Toggle type="checkbox" label="방전" />
+        <Toggle type="checkbox" label="방전" checked={dischargeSwitch} onChange={handleDischargeSwitch} />
       </ToggleWrapper>
     </Container>
   );
+};
+
+ButtonSwitch.propTypes = {
+  packData: PropTypes.object,
 };
 
 export default ButtonSwitch;
