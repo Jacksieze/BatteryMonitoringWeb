@@ -9,6 +9,7 @@ import { useWindowWidth } from "../../hooks/windowWidth/useWindowWidth";
 import { debounce } from "../../util/debounce";
 
 const BatteryModules = ({ handleModalOpen, packData }) => {
+  // 배터리 팩 총괄하는 컴포넌트
   const cardCount = 4;
   const cardRefs = useRef(
     // 배터리 팩 카드의 위치를 계산하기 위한 useRef
@@ -16,7 +17,6 @@ const BatteryModules = ({ handleModalOpen, packData }) => {
       .fill()
       .map(() => createRef())
   );
-  // 배터리 팩 총괄하는 컴포넌트
   const [currentPage, setCurrentPage] = useState(0);
   const windowWidth = useWindowWidth();
 

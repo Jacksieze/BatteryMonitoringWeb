@@ -5,11 +5,11 @@ import ModalAmpere from "./ModalAmpere/ModalAmpere";
 import ModalTemperature from "./ModalTemperature/ModalTemperature";
 import ButtonSwitch from "./ButtonSwitch/ButtonSwitch";
 
-const ModalSideInfos = ({ packData }) => {
+const ModalSideInfos = ({ packData, socket }) => {
   // 모달의 사이드 정보들을 렌더링하는 컴포넌트
   return (
     <Container>
-      <ButtonSwitch packData={packData} />
+      <ButtonSwitch packData={packData} socket={socket} />
       <InfoContainer>
         <ModalSOC packData={packData} />
         <ModalAmpere packData={packData} />
@@ -21,6 +21,7 @@ const ModalSideInfos = ({ packData }) => {
 
 ModalSideInfos.propTypes = {
   packData: PropTypes.object,
+  socket: PropTypes.object,
 };
 
 export default ModalSideInfos;

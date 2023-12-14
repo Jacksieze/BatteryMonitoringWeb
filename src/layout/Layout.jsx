@@ -3,12 +3,13 @@ import Logo from "../assets/ci-blue-out.png";
 import MonitorPage from "../pages/MonitorPage";
 import "boxicons";
 import { useNavigate } from "react-router-dom";
+import { useWebsocket } from "../api/webSocket";
 import { useWebsocketData } from "../hooks/websocket/useWebsocketData";
 
 const Layout = () => {
   const navigate = useNavigate();
-  useWebsocketData();
-  const { isConnected } = useWebsocketData();
+  const { socket } = useWebsocket();
+  const { isConnected, packData } = useWebsocketData();
 
   const handleLogout = () => {
     // 로그아웃 핸들러
@@ -32,7 +33,7 @@ const Layout = () => {
         </div>
       </Style.Header>
       <Style.Main>
-        <MonitorPage />
+        <MonitorPage socket={socket} packData={packData} />
       </Style.Main>
     </>
   );

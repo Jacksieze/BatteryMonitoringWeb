@@ -13,9 +13,9 @@ const TotalCellVolt = ({ totalCellVolt, packData }) => {
 
   useEffect(() => {
     setMinCellNumber(packData.minCellNumber);
-    setMinCellVolt(packData.minCellVoltage / 1000);
+    setMinCellVolt(packData.minCellVoltage);
     setMaxCellNumber(packData.maxCellNumber);
-    setMaxCellVolt(packData.maxCellVoltage / 1000);
+    setMaxCellVolt(packData.maxCellVoltage);
   }, [packData]);
 
   return (

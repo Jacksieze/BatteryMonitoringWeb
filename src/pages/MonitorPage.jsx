@@ -1,15 +1,12 @@
 import { useState, useCallback } from "react";
-import { useWebsocket } from "../api/webSocket";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import CradleInfo from "../components/Cradle/CradleInfo";
 import BatteryModules from "../components/Batterys/BatteryModules";
 import SideData from "../components/EventLog/SideData";
 import Modal from "../components/Modal/Modal";
-import { useWebsocketData } from "../hooks/websocket/useWebsocketData";
 
-const MonitorPage = () => {
-  useWebsocket(); // 웹소켓 연결
-  const { packData } = useWebsocketData();
+const MonitorPage = ({ socket, packData }) => {
   // 모니터 페이지의 모든 컴포넌트를 렌더링하는 페이지
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackId, setSelectedPackId] = useState(null); // 선택한 배터리 팩의 데이터
@@ -21,7 +18,9 @@ const MonitorPage = () => {
 
   return (
     <>
-      {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} packData={packData} packId={selectedPackId} />}
+      {isModalOpen && (
+        <Modal setIsModalOpen={setIsModalOpen} packData={packData} packId={selectedPackId} socket={socket} />
+      )}
       <CradleInfo />
       <Container>
         <BatteryModules handleModalOpen={handleModalOpen} packData={packData} />
@@ -29,6 +28,11 @@ const MonitorPage = () => {
       </Container>
     </>
   );
+};
+
+MonitorPage.propTypes = {
+  socket: PropTypes.object,
+  packData: PropTypes.object,
 };
 
 export default MonitorPage;

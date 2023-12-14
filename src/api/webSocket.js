@@ -33,12 +33,16 @@ export const useWebsocket = () => {
       console.log("server error: ", error);
     };
 
+    if (socket !== null) {
+      return;
+    }
+
     setSocket(ws);
 
     return () => {
       ws.close();
     };
-  }, [dispatch]);
+  }, [dispatch, socket]);
 
   return { socket };
 };

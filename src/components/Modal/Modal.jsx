@@ -5,7 +5,7 @@ import ModalHead from "./ModalHead/ModalHead";
 import ModalCellVolt from "./ModalCellVolt/ModalCellVolt";
 import ModalSideInfos from "./ModalSideInfos/ModalSideInfos";
 
-const Modal = ({ setIsModalOpen, packData, packId }) => {
+const Modal = ({ setIsModalOpen, packData, packId, socket }) => {
   // 모달 컴포넌트
   const data = packData[`packData${packId}`];
   useEffect(() => {
@@ -31,7 +31,7 @@ const Modal = ({ setIsModalOpen, packData, packId }) => {
         </Style.ModalHeader>
         <Style.ModalBody>
           <ModalCellVolt packData={data} />
-          <ModalSideInfos packData={data} />
+          <ModalSideInfos packData={data} socket={socket} />
         </Style.ModalBody>
       </Style.ModalContainer>
     </Style.Modal>
@@ -42,6 +42,7 @@ Modal.propTypes = {
   setIsModalOpen: PropTypes.func,
   packId: PropTypes.object,
   packData: PropTypes.object,
+  socket: PropTypes.object,
 };
 
 export default Modal;

@@ -30,7 +30,7 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
             </Style.CardContent>
             <Style.CardContent>
               <h4>전압 :</h4>
-              <p>{batteryData ? batteryData.packVoltage / 10 : 0} V</p>
+              <p>{batteryData ? batteryData.packVoltage : 0} V</p>
             </Style.CardContent>
             <Style.CardContent>
               <h4>전류 :</h4>
