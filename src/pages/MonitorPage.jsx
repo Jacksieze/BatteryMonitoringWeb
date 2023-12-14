@@ -24,7 +24,7 @@ const MonitorPage = ({ socket, packData }) => {
       <CradleInfo />
       <Container>
         <BatteryModules handleModalOpen={handleModalOpen} packData={packData} />
-        <SideData />
+        <SideData packData={packData} />
       </Container>
     </>
   );

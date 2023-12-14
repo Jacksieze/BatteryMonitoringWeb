@@ -13,8 +13,16 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
     }, 1000);
   }, []);
 
+  const handleClick = () => {
+    if (!batteryData) {
+      alert("연결되지 않은 배터리 팩입니다.");
+      return;
+    }
+    handleModalOpen();
+  };
+
   return (
-    <Style.Container onClick={handleModalOpen} ref={ref}>
+    <Style.Container onClick={handleClick} ref={ref}>
       <Style.CardHeader>
         <h3>배터리 {batteryData ? batteryData.packId : "--"}</h3>
         <h4>Cradle {batteryData ? batteryData.cradleId : "--"}</h4>
@@ -63,7 +71,7 @@ BatteryCard.displayName = "BatteryCard";
 
 BatteryCard.propTypes = {
   handleModalOpen: PropTypes.func,
-  data: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  data: PropTypes.object,
 };
 
 export default BatteryCard;

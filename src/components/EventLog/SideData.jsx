@@ -1,15 +1,20 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 import LogData from "./LogData/LogData";
 import TotalVolt from "./TotalVolt/TotalVolt";
 
-const SideData = () => {
+const SideData = ({ packData }) => {
   // 배터리 팩들의 전체전압과 이벤트 로그를 보여주는 컴포넌트
   return (
     <Container>
-      <TotalVolt />
+      <TotalVolt packData={packData} />
       <LogData />
     </Container>
   );
+};
+
+SideData.propTypes = {
+  packData: PropTypes.object,
 };
 
 export default SideData;

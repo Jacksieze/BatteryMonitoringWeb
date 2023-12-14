@@ -40,7 +40,7 @@ const Modal = ({ setIsModalOpen, packData, packId, socket }) => {
 
 Modal.propTypes = {
   setIsModalOpen: PropTypes.func,
-  packId: PropTypes.object,
+  packId: PropTypes.number,
   packData: PropTypes.object,
   socket: PropTypes.object,
 };
