@@ -1,4 +1,7 @@
+import { useState, useEffect } from "react";
 import Style from "./LogData.style";
+import PropTypes from "prop-types";
+import { eventLogs } from "../../../common/eventLogs";
 
 const tHeadData = [
   // 이벤트 로그 테이블 헤더
@@ -7,33 +10,47 @@ const tHeadData = [
   { width: "55%", name: "발생 내용" },
 ];
 
-const tBodyData = [
-  // 이벤트 로그 mock데이터
-  {
-    id: "배터리 1",
-    content: "배터리 1 과전류 발생",
-  },
-  {
-    id: "배터리 2",
-    content: "연결이 끊어졌습니다.",
-  },
-  {
-    id: "배터리 3",
-    content: "배터리3 가 연결 되었습니다.",
-  },
-  {
-    id: "배터리 4",
-    content: "연결상태가 정상입니다.",
-  },
-];
-
-const LogData = () => {
+const LogData = ({ packData }) => {
   // 이벤트 로그 컴포넌트
-  const eventDate = () => {
-    const date = new Date();
+  const [logs, setLogs] = useState([]);
+  const [lastLog, setLastLog] = useState(null);
+
+  useEffect(() => {
+    for (let packId in packData) {
+      const pack = packData[packId];
+
+      for (let category in pack) {
+        if (category === "packId") continue;
+        const events = pack[category];
+
+        if (typeof events === "object") {
+          for (let eventKey in events) {
+            const eventValue = events[eventKey];
+            if (eventValue === 1) {
+              const logText = eventLogs[category] && eventLogs[category][eventKey];
+              const content = logText ? logText : `${eventKey}`;
+
+              if (lastLog && lastLog.content === content) continue;
+
+              const newLog = {
+                id: packId,
+                time: new Date(),
+                content: content,
+              };
+
+              setLogs((prevLogs) => [...prevLogs, newLog]);
+              setLastLog(newLog);
+            }
+          }
+        }
+      }
+    }
+  }, [packData, lastLog]);
+
+  const eventDate = (date) => {
     const year = String(date.getFullYear()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDay()).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     const hour = String(date.getHours()).padStart(2, "0");
     const minute = String(date.getMinutes()).padStart(2, "0");
     const seconds = String(date.getSeconds()).padStart(2, "0");
@@ -58,11 +75,11 @@ const LogData = () => {
             </tr>
           </thead>
           <tbody>
-            {tBodyData.map((item, index) => (
+            {logs.map((log, index) => (
               <tr key={index}>
-                <td>{eventDate()}</td>
-                <td>{item.id}</td>
-                <td>{item.content}</td>
+                <td>{eventDate(log.time)}</td>
+                <td>{log.id}</td>
+                <td>{log.content}</td>
               </tr>
             ))}
           </tbody>
@@ -70,6 +87,10 @@ const LogData = () => {
       </Style.LogBody>
     </Style.Container>
   );
+};
+
+LogData.propTypes = {
+  packData: PropTypes.object,
 };
 
 export default LogData;

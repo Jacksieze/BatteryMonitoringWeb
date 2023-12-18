@@ -6,9 +6,9 @@ import CellWrapper from "../CellWrapper/CellWrapper";
 
 const TotalCellVolt = ({ totalCellVolt, packData }) => {
   // 전체 셀 전압을 표현하는 컴포넌트
-  const [minCellNumber, setMinCellNumber] = useState("--");
+  const [minCellNumber, setMinCellNumber] = useState(0);
   const [minCellVolt, setMinCellVolt] = useState("--");
-  const [maxCellNumber, setMaxCellNumber] = useState("--");
+  const [maxCellNumber, setMaxCellNumber] = useState(0);
   const [maxCellVolt, setMaxCellVolt] = useState("--");
 
   useEffect(() => {

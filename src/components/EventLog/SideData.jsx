@@ -8,7 +8,7 @@ const SideData = ({ packData }) => {
   return (
     <Container>
       <TotalVolt packData={packData} />
-      <LogData />
+      <LogData packData={packData} />
     </Container>
   );
 };
