@@ -18,7 +18,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  margin-bottom: 30px;
+  margin: 30px 0;
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
@@ -34,6 +34,7 @@ const Container = styled.div`
     font-size: 16px;
   }
   @media (${({ theme }) => theme.media.tablet}) {
+    margin-top: 0;
     border-radius: 0;
     box-shadow: none;
     & > h2 {
