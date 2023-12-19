@@ -14,6 +14,7 @@ module.exports = {
   plugins: ["react-refresh"],
   rules: {
     "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
+    "react-hooks/exhaustive-deps": "off", // useEffect의 deps를 검사하지 않음
     "import/no-anonymous-default-export": [
       "error",
       {

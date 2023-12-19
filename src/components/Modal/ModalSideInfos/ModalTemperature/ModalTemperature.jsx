@@ -21,7 +21,7 @@ const ModalTemperature = ({ packData }) => {
   return (
     <Container>
       <h3>온도 : </h3>
-      <span>{temperature} C˚</span>
+      <span>{temperature - 40} C˚</span>
     </Container>
   );
 };

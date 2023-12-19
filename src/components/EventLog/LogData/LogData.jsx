@@ -13,9 +13,48 @@ const tHeadData = [
 const LogData = ({ packData }) => {
   // 이벤트 로그 컴포넌트
   const [logs, setLogs] = useState([]);
-  const [lastLog, setLastLog] = useState(null);
+  const [batteryConnected, setBatteryConnected] = useState({});
 
   useEffect(() => {
+    const storedLogs = localStorage.getItem("logs");
+    if (storedLogs) {
+      const logs = JSON.parse(storedLogs);
+      const restoredLogs = logs.map((log) => ({ ...log, time: new Date(log.time) }));
+      setLogs(restoredLogs);
+    }
+  }, []);
+
+  useEffect(() => {
+    let newStatus = { ...batteryConnected };
+    let newLogs = [...logs];
+
+    for (let packId in packData) {
+      const pack = packData[packId];
+      if (pack.batteryStatus === 1 && (!newStatus[packId] || newStatus[packId] !== 1)) {
+        const now = new Date();
+        const newLog = {
+          id: packId,
+          time: now.toISOString(),
+          content: `배터리 ${packId} 연결되었습니다.`,
+        };
+        newLogs.push(newLog);
+      } else if (pack.batteryStatus !== 1 && newStatus[packId] === 1) {
+        const now = new Date();
+        const newLog = {
+          id: packId,
+          time: now.toISOString(),
+          content: `배터리 ${packId} 연결이 해제되었습니다.`,
+        };
+        newLogs.push(newLog);
+      }
+      newStatus[packId] = pack.batteryStatus;
+    }
+    setBatteryConnected(newStatus);
+    setLogs(newLogs);
+  }, [packData]);
+
+  useEffect(() => {
+    let newLogs = [...logs];
     for (let packId in packData) {
       const pack = packData[packId];
 
@@ -31,46 +70,40 @@ const LogData = ({ packData }) => {
               const content = logText ? logText : `${eventKey}`;
 
               const now = new Date();
-              if (lastLog && lastLog.content === content && now - lastLog.time < 60 * 1000) {
-                continue;
-              }
-
               const newLog = {
                 id: packId,
                 time: now.toISOString(),
                 content: content,
               };
 
-              setLogs((prevLogs) => {
-                const newLogs = [...prevLogs, newLog];
-                while (newLogs.length > 30) {
-                  newLogs.shift();
-                }
-                localStorage.setItem("logs", JSON.stringify(newLogs));
-                return newLogs;
-              });
-              setLastLog(newLog);
+              if (
+                newLogs.length > 0 &&
+                newLogs[newLogs.length - 1].content === content &&
+                now - new Date(newLogs[newLogs.length - 1].time) < 60 * 1000
+              ) {
+                continue;
+              }
+
+              newLogs.push(newLog);
+              while (newLogs.length > 30) {
+                newLogs.shift();
+              }
             }
           }
         }
       }
     }
-  }, [packData, lastLog]);
+    setLogs(newLogs);
+  }, [packData]);
 
   useEffect(() => {
-    const storedLogs = localStorage.getItem("logs");
-    if (storedLogs) {
-      const logs = JSON.parse(storedLogs);
-      const restoredLogs = logs.map((log) => ({ ...log, time: new Date(log.time) }));
-      setLogs(restoredLogs);
-    }
-  }, []);
+    localStorage.setItem("logs", JSON.stringify(logs));
+  }, [logs]);
 
   const handleReset = () => {
     if (window.confirm("로그를 초기화 하시겠습니까?")) {
       localStorage.removeItem("logs");
       setLogs([]);
-      setLastLog(null);
     }
   };
 
@@ -85,6 +118,7 @@ const LogData = ({ packData }) => {
     const temp = `${year}-${month}-${day} ${hour}:${minute}:${seconds}`;
     return temp;
   };
+
   return (
     <Style.Container>
       <Style.LogHeader>
@@ -105,7 +139,7 @@ const LogData = ({ packData }) => {
           <tbody>
             {logs.map((log, index) => (
               <tr key={index}>
-                <td>{eventDate(log.time)}</td>
+                <td>{eventDate(new Date(log.time))}</td>
                 <td>{log.id}</td>
                 <td>{log.content}</td>
               </tr>

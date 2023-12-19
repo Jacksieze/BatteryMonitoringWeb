@@ -7,8 +7,8 @@ import TotalCellVolt from "./TotalCellVolt/TotalCellVolt";
 const ModalCellVolt = ({ packData }) => {
   // 배터리 팩의 셀 전압 모달 컴포넌트
   const [isLoading, setIsLoading] = useState(true);
-  const [cellVolt, setCellVolt] = useState(Array(14).fill("--"));
-  const [totalCellVolt, setTotalCellVolt] = useState("--");
+  const [cellVolt, setCellVolt] = useState(Array(14).fill(0));
+  const [totalCellVolt, setTotalCellVolt] = useState(0);
 
   useEffect(() => {
     setIsLoading(true);

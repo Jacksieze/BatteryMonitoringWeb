@@ -8,8 +8,8 @@ export const useWebsocket = () => {
 
   //웹소켓 연결
   useEffect(() => {
-    const ws = new WebSocket("ws://192.168.219.123:8030/ws");
-    // const ws = new WebSocket("ws://3.35.111.150:8030/ws");
+    // const ws = new WebSocket("ws://192.168.219.113:8030/ws");
+    const ws = new WebSocket("ws://3.35.111.150:8030/ws");
 
     ws.onopen = () => {
       dispatch(setIsConnected(true));

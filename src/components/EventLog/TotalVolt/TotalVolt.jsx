@@ -14,7 +14,7 @@ const TotalVolt = ({ packData }) => {
         return sum + pack.packVoltage;
       }, 0);
       setTotalVolt(total);
-    }, 3000);
+    }, 1000);
     return () => clearInterval(intervalId);
   }, [packData]);
 
