@@ -30,15 +30,25 @@ const LogData = ({ packData }) => {
               const logText = eventLogs[category] && eventLogs[category][eventKey];
               const content = logText ? logText : `${eventKey}`;
 
-              if (lastLog && lastLog.content === content) continue;
+              const now = new Date();
+              if (lastLog && lastLog.content === content && now - lastLog.time < 60 * 1000) {
+                continue;
+              }
 
               const newLog = {
                 id: packId,
-                time: new Date(),
+                time: now.toISOString(),
                 content: content,
               };
 
-              setLogs((prevLogs) => [...prevLogs, newLog]);
+              setLogs((prevLogs) => {
+                const newLogs = [...prevLogs, newLog];
+                while (newLogs.length > 30) {
+                  newLogs.shift();
+                }
+                localStorage.setItem("logs", JSON.stringify(newLogs));
+                return newLogs;
+              });
               setLastLog(newLog);
             }
           }
@@ -46,6 +56,23 @@ const LogData = ({ packData }) => {
       }
     }
   }, [packData, lastLog]);
+
+  useEffect(() => {
+    const storedLogs = localStorage.getItem("logs");
+    if (storedLogs) {
+      const logs = JSON.parse(storedLogs);
+      const restoredLogs = logs.map((log) => ({ ...log, time: new Date(log.time) }));
+      setLogs(restoredLogs);
+    }
+  }, []);
+
+  const handleReset = () => {
+    if (window.confirm("로그를 초기화 하시겠습니까?")) {
+      localStorage.removeItem("logs");
+      setLogs([]);
+      setLastLog(null);
+    }
+  };
 
   const eventDate = (date) => {
     const year = String(date.getFullYear()).padStart(2, "0");
@@ -62,6 +89,7 @@ const LogData = ({ packData }) => {
     <Style.Container>
       <Style.LogHeader>
         <h3>이벤트 로그</h3>
+        <button onClick={handleReset}>초기화</button>
       </Style.LogHeader>
       <Style.LogBody>
         <Style.LogTable>

@@ -16,9 +16,18 @@ const LogHeader = styled.div`
   display: flex;
   align-items: center;
   & > h3 {
-    margin-left: 20px;
+    margin: 0 20px;
     color: ${({ theme }) => theme.colors.white};
     font-size: 20px;
+  }
+  & > button {
+    margin-left: auto;
+    margin-right: 20px;
+    background-color: transparent;
+    color: ${({ theme }) => theme.colors.white};
+    border: none;
+    font-weight: 700;
+    cursor: pointer;
   }
   @media (${({ theme }) => theme.media.mobile}) {
     height: 40px;
