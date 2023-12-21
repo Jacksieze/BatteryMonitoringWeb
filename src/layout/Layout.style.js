@@ -38,7 +38,7 @@ const Header = styled.header`
       background-color: ${({ theme }) => theme.colors.primary};
       border: none;
       border-radius: 6px;
-      padding: 8px;
+      padding: 6px 8px;
       color: ${({ theme }) => theme.colors.white};
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       font-size: 14px;
@@ -46,7 +46,8 @@ const Header = styled.header`
       cursor: pointer;
       transition: all 0.3s ease-in-out;
       &:hover {
-        background-color: ${({ theme }) => theme.colors.tertiary};
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
       }
     }
   }

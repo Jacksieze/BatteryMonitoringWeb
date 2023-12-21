@@ -25,7 +25,7 @@ const LogHeader = styled.div`
     margin-right: 20px;
     background-color: transparent;
     color: ${({ theme }) => theme.colors.white};
-    border: none;
+    border-radius: 6px;
     font-weight: 700;
     cursor: pointer;
   }

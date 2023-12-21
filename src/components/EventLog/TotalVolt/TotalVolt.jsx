@@ -14,7 +14,7 @@ const TotalVolt = ({ packData }) => {
         return sum + pack.packVoltage;
       }, 0);
       setTotalVolt(total);
-    }, 1000);
+    }, 2000);
     return () => clearInterval(intervalId);
   }, [packData]);
 
@@ -22,7 +22,7 @@ const TotalVolt = ({ packData }) => {
     <Container>
       <GaugeComponent
         id="TotalVolt"
-        value={totalVolt}
+        value={totalVolt ? totalVolt : 0}
         maxValue={280}
         type="radial"
         labels={{

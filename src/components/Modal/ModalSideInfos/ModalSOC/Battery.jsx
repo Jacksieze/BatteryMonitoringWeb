@@ -9,17 +9,6 @@ const Battery = ({ packData }) => {
   useEffect(() => {
     setLevel(packData.soc);
   }, [packData]);
-  // 랜덤값으로 테스트
-  // const [level, setLevel] = useState(0);
-  // const random = Math.floor(Math.random() * 100);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setLevel(random);
-  //   }, 1000);
-  //   return () => clearInterval(intervalId);
-  // }, [random]);
-  // -----------------------------
 
   return (
     <Container $level={level}>

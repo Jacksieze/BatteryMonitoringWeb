@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Style from "./LogData.style";
 import PropTypes from "prop-types";
+import "boxicons";
 import { eventLogs } from "../../../common/eventLogs";
 
 const tHeadData = [
@@ -85,7 +86,7 @@ const LogData = ({ packData }) => {
               }
 
               newLogs.push(newLog);
-              while (newLogs.length > 30) {
+              while (newLogs.length > 50) {
                 newLogs.shift();
               }
             }
@@ -123,7 +124,9 @@ const LogData = ({ packData }) => {
     <Style.Container>
       <Style.LogHeader>
         <h3>이벤트 로그</h3>
-        <button onClick={handleReset}>초기화</button>
+        <button onClick={handleReset}>
+          <box-icon name="trash" color="#ffffff"></box-icon>
+        </button>
       </Style.LogHeader>
       <Style.LogBody>
         <Style.LogTable>
@@ -137,7 +140,7 @@ const LogData = ({ packData }) => {
             </tr>
           </thead>
           <tbody>
-            {logs.map((log, index) => (
+            {logs.reverse().map((log, index) => (
               <tr key={index}>
                 <td>{eventDate(new Date(log.time))}</td>
                 <td>{log.id}</td>
