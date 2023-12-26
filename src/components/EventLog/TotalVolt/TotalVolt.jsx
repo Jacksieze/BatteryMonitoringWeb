@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import GaugeComponent from "react-gauge-component";
 import styled from "styled-components";
@@ -6,17 +6,22 @@ import styled from "styled-components";
 const TotalVolt = ({ packData }) => {
   // 배터리 팩들의 전체전압을 보여주는 컴포넌트
   const [totalVolt, setTotalVolt] = useState(0);
+  const packDataRef = useRef(packData);
+
+  useEffect(() => {
+    packDataRef.current = packData;
+  }, [packData]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if (!packData) return;
-      const total = Object.values(packData).reduce((sum, pack) => {
+      if (!packDataRef.current) return;
+      const total = Object.values(packDataRef.current).reduce((sum, pack) => {
         return sum + pack.packVoltage;
       }, 0);
       setTotalVolt(total);
-    }, 2000);
+    }, 1000);
     return () => clearInterval(intervalId);
-  }, [packData]);
+  }, []);
 
   return (
     <Container>
