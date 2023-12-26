@@ -29,13 +29,17 @@ const ModalCellVolt = ({ packData }) => {
           <p style={{ fontSize: 20 }}>불러오는 중 입니다...</p>
         ) : (
           Object.entries(cellVolt).map(([cell, voltage], index) => (
-            <CellWrapper key={index} cellNumber={packData ? cell.replace("cell", "") : index + 1} cellVolt={voltage} />
+            <CellWrapper
+              key={index}
+              cellNumber={packData ? parseInt(cell.replace("cell", "")) : index + 1}
+              cellVolt={voltage}
+            />
           ))
         )}
       </Style.CellContainer>
       <Style.VoltBox>
         {isLoading ? (
-          <p style={{ fontSize: 20, textAlign: "center" }}>잠시만 기다려주세요...</p>
+          <p>잠시만 기다려주세요...</p>
         ) : (
           <TotalCellVolt totalCellVolt={totalCellVolt} packData={packData} />
         )}

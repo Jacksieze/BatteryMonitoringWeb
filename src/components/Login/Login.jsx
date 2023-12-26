@@ -5,8 +5,8 @@ import LogoRound from "../../assets/모비-out-스티커.png";
 import "boxicons";
 
 const Login = () => {
-  const [userId, setUserId] = useState("admin");
-  const [password, setPassword] = useState("test1234");
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [toggleType, setToggleType] = useState(false);
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ const Login = () => {
           <box-icon
             name={toggleType ? "hide" : "show"}
             onClick={handleToggleType}
-            color="#555"
+            color="#888"
             style={{ position: "absolute", right: 10, cursor: "pointer" }}></box-icon>
           {error && <p>{error}</p>}
         </Style.InputBox>

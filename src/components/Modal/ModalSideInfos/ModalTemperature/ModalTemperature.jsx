@@ -9,14 +9,6 @@ const ModalTemperature = ({ packData }) => {
   useEffect(() => {
     setTemperature(packData.temperature);
   }, [packData]);
-  // const [randomTemp, setRandomTemp] = useState(0);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setRandomTemp(Math.floor(Math.random() * 20) + 12);
-  //   }, 1000);
-  //   return () => clearInterval(intervalId);
-  // }, []);
 
   return (
     <Container>

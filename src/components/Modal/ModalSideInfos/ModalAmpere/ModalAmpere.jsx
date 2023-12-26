@@ -10,16 +10,6 @@ const ModalAmpere = ({ packData }) => {
   useEffect(() => {
     setCurrent(packData.current);
   }, [packData]);
-  // 랜덤 전류값
-  // const [randomAmpere, setRandomAmpere] = useState(0);
-
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setRandomAmpere(Number((Math.random() * 200 - 100).toFixed(2)));
-  //   }, 1000);
-  //   return () => clearInterval(intervalId);
-  // }, []);
-  // -----------------------------
 
   return (
     <Container>

@@ -42,7 +42,7 @@ const Container = styled.div`
   }
   & > div {
     position: absolute;
-    width: ${({ $level }) => $level}%;
+    width: ${({ $level }) => Math.min($level, 100)}%;
     height: 100%;
     border-radius: 7px;
     background-color: ${({ $level }) => ($level < 33 ? "#E84D31" : $level < 66 ? "#F7E400" : "#5BE12C")};

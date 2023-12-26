@@ -75,6 +75,7 @@ const InputBox = styled.div`
 const LoginBtn = styled.button`
   width: 130px;
   height: 36px;
+  line-height: 34px;
   background-color: ${({ theme }) => theme.colors.primary};
   border: 1px solid ${({ theme }) => theme.colors.primary};
   border-radius: 6px;

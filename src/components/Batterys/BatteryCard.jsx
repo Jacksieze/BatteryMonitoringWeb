@@ -54,7 +54,7 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
             </Style.CardContent>
             <Style.CardContent>
               <h4>온도 :</h4>
-              <p>{batteryData ? batteryData.temperature : 0} ℃</p>
+              <p>{batteryData ? batteryData.temperature - 40 : 0} ℃</p>
             </Style.CardContent>
             <Style.CardContent>
               <h4>SoC :</h4>

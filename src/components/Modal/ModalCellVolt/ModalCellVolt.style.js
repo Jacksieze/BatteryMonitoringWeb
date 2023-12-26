@@ -28,6 +28,10 @@ const CellContainer = styled.div`
 `;
 const VoltBox = styled.div`
   width: 100%;
+  & > p {
+    font-size: 20px;
+    text-align: center;
+  }
 `;
 
 const Style = { Container, CellContainer, VoltBox };
