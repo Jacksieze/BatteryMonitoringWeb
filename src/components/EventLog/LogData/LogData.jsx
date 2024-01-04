@@ -14,7 +14,6 @@ const tHeadData = [
 const LogData = ({ packData }) => {
   // 이벤트 로그 컴포넌트
   const [logs, setLogs] = useState([]);
-  const [batteryConnected, setBatteryConnected] = useState({});
 
   useEffect(() => {
     const storedLogs = localStorage.getItem("logs");
@@ -26,41 +25,13 @@ const LogData = ({ packData }) => {
   }, []);
 
   useEffect(() => {
-    let newStatus = { ...batteryConnected };
     let newLogs = [...logs];
-
-    for (let packId in packData) {
-      const pack = packData[packId];
-      if (pack.batteryStatus === 1 && (!newStatus[packId] || newStatus[packId] !== 1)) {
-        const now = new Date();
-        const newLog = {
-          id: packId,
-          time: now.toISOString(),
-          content: `배터리 ${packId} 연결되었습니다.`,
-        };
-        newLogs.push(newLog);
-      } else if (pack.batteryStatus !== 1 && newStatus[packId] === 1) {
-        const now = new Date();
-        const newLog = {
-          id: packId,
-          time: now.toISOString(),
-          content: `배터리 ${packId} 연결이 해제되었습니다.`,
-        };
-        newLogs.push(newLog);
-      }
-      newStatus[packId] = pack.batteryStatus;
-    }
-    setBatteryConnected(newStatus);
-    setLogs(newLogs);
-  }, [packData]);
-
-  useEffect(() => {
-    let newLogs = [...logs];
+    const ignoreKeys = ["packId", "DI_state"];
     for (let packId in packData) {
       const pack = packData[packId];
 
       for (let category in pack) {
-        if (category === "packId") continue;
+        if (ignoreKeys.includes(category)) continue;
         const events = pack[category];
 
         if (typeof events === "object") {

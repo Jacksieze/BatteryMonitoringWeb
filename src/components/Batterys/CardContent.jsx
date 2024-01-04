@@ -2,10 +2,11 @@ import Style from "./BatteryCard.style";
 import PropTypes from "prop-types";
 
 const CardContent = ({ title, data, unit }) => {
+  const displayData = data !== undefined && data !== null ? `${data} ${unit}` : "--";
   return (
     <Style.CardContent>
       <h4>{title} :</h4>
-      <p>{data !== null ? `${data} ${unit}` : "--"}</p>
+      <p>{displayData}</p>
     </Style.CardContent>
   );
 };

@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 
-import { useState, useRef, createRef, useMemo } from "react";
+import { useState, useRef, createRef } from "react";
 import Style from "./BatteryModules.style";
 import PropTypes from "prop-types";
 import BatteryCard from "./BatteryCard";
@@ -28,26 +28,36 @@ const BatteryModules = ({ handleModalOpen, packData }) => {
     handlePaginationClick(nextPage);
   }, 100);
 
-  const cards = useMemo(
-    () =>
-      Array.from({ length: cardCount }, (_, index) => {
-        const packKey = `packData${index + 1}`;
-        const pack = packData[packKey] || null;
-        return (
-          <BatteryCard
-            key={index}
-            data={pack}
-            handleModalOpen={() => handleModalOpen(pack.packId)}
-            ref={cardRefs.current[index]}
-          />
-        );
-      }),
-    [packData, cardCount, handleModalOpen]
-  );
+  const createBatteryCard = (cradleId, cradlePosition) => {
+    let currentBatteryData = null;
+    for (const key in packData) {
+      if (Object.hasOwnProperty.call(packData, key)) {
+        const data = packData[key];
+        if (data.cradleId === cradleId && data.cradlePosition === cradlePosition) {
+          currentBatteryData = data;
+          break;
+        }
+      }
+    }
+
+    if (!currentBatteryData) {
+      return (
+        <BatteryCard key={`${cradleId}-${cradlePosition}`} data={{}} handleModalOpen={() => handleModalOpen(null)} />
+      );
+    }
+
+    return (
+      <BatteryCard
+        key={`${cradleId}-${cradlePosition}`}
+        data={currentBatteryData}
+        handleModalOpen={() => handleModalOpen(currentBatteryData.packId)}
+      />
+    );
+  };
 
   const handlePaginationClick = (page) => {
     // 페이지네이션 클릭 시 해당 배터리 팩으로 이동
-    if (windowWidth <= 500) {
+    if (windowWidth <= 500 && cardRefs.current[page]?.current) {
       cardRefs.current[page].current.scrollIntoView({
         behavior: "smooth",
         block: "nearest",
@@ -60,7 +70,12 @@ const BatteryModules = ({ handleModalOpen, packData }) => {
   return (
     <>
       <Style.Container onScroll={handleScroll}>
-        <Style.CradleWrapper>{cards}</Style.CradleWrapper>
+        <Style.CradleWrapper>
+          {createBatteryCard(1, 1)}
+          {createBatteryCard(1, 2)}
+          {createBatteryCard(2, 1)}
+          {createBatteryCard(2, 2)}
+        </Style.CradleWrapper>
       </Style.Container>
       {windowWidth <= 500 && (
         <PaginationDots currentPage={currentPage} totalPages={cardCount} onPageChange={handlePaginationClick} />

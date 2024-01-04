@@ -7,12 +7,21 @@ import "boxicons";
 const ModalHead = ({ handleModalClose, packData }) => {
   // 모달 헤더 컴포넌트
   const [packId, setPackId] = useState("--");
-  const [batteryStatus, setBatteryStatus] = useState("--");
 
   useEffect(() => {
     setPackId(packData.packId);
-    setBatteryStatus(packData.batteryStatus);
   }, [packData]);
+
+  const status = (chargerStatus, loadStatus) => {
+    if (chargerStatus === 1 && loadStatus === 0) {
+      return "충전";
+    } else if (chargerStatus === 0 && loadStatus === 1) {
+      return "방전";
+    } else {
+      return "정지";
+    }
+  };
+
   return (
     <>
       <StatusContainer>
@@ -21,9 +30,7 @@ const ModalHead = ({ handleModalClose, packData }) => {
         </div>
         <div>
           <span>상태 :</span>
-          <span style={packData ? (batteryStatus === 1 ? { color: "green" } : { color: "red" }) : { color: "#222" }}>
-            {packData ? (batteryStatus === 1 ? "충전" : "방전") : "--"}
-          </span>
+          <span>{packData ? status(packData.chargerStatus, packData.loadStatus) : "--"}</span>
         </div>
       </StatusContainer>
       <LogoBox>

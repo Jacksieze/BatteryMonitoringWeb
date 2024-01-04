@@ -8,6 +8,20 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
   const [isLoading, setIsLoading] = useState(true);
   const batteryData = data;
 
+  /* eslint-disable indent */
+  const getCradlePosition = (position) => {
+    switch (position) {
+      case 1:
+        return "L";
+      case 2:
+        return "R";
+      default:
+        return "--";
+    }
+  };
+
+  const cradlePosition = batteryData ? getCradlePosition(batteryData.cradlePosition) : "--";
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -15,18 +29,20 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
   }, []);
 
   const handleClick = () => {
-    if (!batteryData) {
+    if (batteryData && batteryData.packId) {
+      handleModalOpen(batteryData.packId);
+    } else {
       alert("연결되지 않은 배터리 팩입니다.");
-      return;
     }
-    handleModalOpen();
   };
 
   return (
     <Style.Container onClick={handleClick} ref={ref}>
       <Style.CardHeader>
         <h3>배터리 {batteryData ? batteryData.packId : "--"}</h3>
-        <h4>Cradle {batteryData ? batteryData.cradleId : "--"}</h4>
+        <h4>
+          Cradle {batteryData.cradleId}-{cradlePosition}
+        </h4>
       </Style.CardHeader>
       <Style.CardBody>
         {isLoading ? (
@@ -35,15 +51,39 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
           <>
             <CardContent
               title="상태"
-              data={batteryData ? (batteryData.batteryStatus === 1 ? "충전" : "방전") : "--"}
+              data={batteryData && batteryData.batteryStatus === 1 ? "연결됨" : "--"}
               unit={""}
             />
-            <CardContent title="전압" data={batteryData ? batteryData.packVoltage : 0} unit="V" />
-            <CardContent title="전류" data={batteryData ? batteryData.current : 0} unit="A" />
-            <CardContent title="최대 셀 전압" data={batteryData ? batteryData.maxCellVoltage : 0} unit="V" />
-            <CardContent title="최소 셀 전압" data={batteryData ? batteryData.minCellVoltage : 0} unit="V" />
-            <CardContent title="온도" data={batteryData ? batteryData.temperature - 40 : 0} unit="℃" />
-            <CardContent title="SoC" data={batteryData ? batteryData.soc : 0} unit="%" />
+            <CardContent
+              title="전압"
+              data={batteryData && batteryData.packVoltage !== undefined ? batteryData.packVoltage : 0}
+              unit="V"
+            />
+            <CardContent
+              title="전류"
+              data={batteryData && batteryData.current !== undefined ? batteryData.current : 0}
+              unit="A"
+            />
+            <CardContent
+              title="최대 셀 전압"
+              data={batteryData && batteryData.maxCellVoltage !== undefined ? batteryData.maxCellVoltage : 0}
+              unit="V"
+            />
+            <CardContent
+              title="최소 셀 전압"
+              data={batteryData && batteryData.minCellVoltage !== undefined ? batteryData.minCellVoltage : 0}
+              unit="V"
+            />
+            <CardContent
+              title="온도"
+              data={batteryData && batteryData.temperature !== undefined ? batteryData.temperature - 40 : 0}
+              unit="℃"
+            />
+            <CardContent
+              title="SoC"
+              data={batteryData && batteryData.soc !== undefined ? batteryData.soc : 0}
+              unit="%"
+            />
           </>
         )}
       </Style.CardBody>
