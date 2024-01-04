@@ -7,6 +7,15 @@ const dataSlice = createSlice({
     setData: (state, action) => {
       return { ...state, ...action.payload };
     },
+    resetData: (state, action) => {
+      const packDataKey = action.payload;
+      if (packDataKey in state) {
+        delete state[packDataKey];
+      }
+    },
+    clearData: () => {
+      return {};
+    },
   },
 });
 
@@ -20,7 +29,7 @@ const connectionSlice = createSlice({
   },
 });
 
-export const { setData } = dataSlice.actions;
+export const { setData, resetData, clearData } = dataSlice.actions;
 export const { setIsConnected } = connectionSlice.actions;
 
 const reducer = combineReducers({
@@ -30,6 +39,7 @@ const reducer = combineReducers({
 
 const store = configureStore({
   reducer,
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export default store;
