@@ -8,7 +8,7 @@ import { useWebsocketData } from "../hooks/websocket/useWebsocketData";
 
 const Layout = () => {
   const navigate = useNavigate();
-  const { socket } = useWebsocket();
+  const { ws } = useWebsocket();
   const { isConnected, packData } = useWebsocketData();
 
   const handleLogout = () => {
@@ -18,6 +18,8 @@ const Layout = () => {
       navigate("/"); // 로그아웃 시 로그인 페이지로 이동
     }
   };
+
+  // console.log("layout readyState:", socket.readyState);
 
   return (
     <>
@@ -33,7 +35,7 @@ const Layout = () => {
         </div>
       </Style.Header>
       <Style.Main>
-        <MonitorPage socket={socket} packData={packData} />
+        <MonitorPage socket={ws} packData={packData} />
       </Style.Main>
     </>
   );

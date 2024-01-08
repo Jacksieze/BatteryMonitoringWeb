@@ -14,45 +14,39 @@ const ButtonSwitch = ({ packData, socket }) => {
   }, [packData]);
 
   const handleChargeSwitch = () => {
-    if (!packData) return;
-    setChargeSwitch((prev) => {
-      const next = prev === 0 ? 1 : 0;
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        console.log("socket is connected");
-        const message = {
-          packId: packData.packId,
-          cradleId: packData.cradleId,
-          chgStatus: next,
-          dsgStatus: packData.DSGMOS_status,
-        };
-        console.log("Sending chg message:", message);
-        socket.send("chg잘 보내지는가?", JSON.stringify(message));
-      } else {
-        console.log("socket is not connected");
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      const next = chargeSwitch === 0 ? 1 : 0;
+      const message = {
+        packId: packData.packId,
+        cradleId: packData.cradleId,
+        chgStatus: next,
+        dsgStatus: packData.DSGMOS_status,
+      };
+      try {
+        socket.send(JSON.stringify(message));
+        setChargeSwitch(next);
+      } catch (error) {
+        console.error("Sending Falied", error);
       }
-      return next;
-    });
+    }
   };
 
   const handleDischargeSwitch = () => {
-    if (!packData) return;
-    setDischargeSwitch((prev) => {
-      const next = prev === 0 ? 1 : 0;
-      if (socket && socket.readyState === WebSocket.OPEN) {
-        console.log("socket is connected");
-        const message = {
-          packId: packData.packId,
-          cradleId: packData.cradleId,
-          chgStatus: packData.CHGMOS_status,
-          dsgStatus: next,
-        };
-        console.log("Sending dsg message:", message);
-        socket.send("잘 보내지는가?", JSON.stringify(message));
-      } else {
-        console.log("socket is not connected");
+    if (socket && socket.readyState === WebSocket.OPEN) {
+      const next = dischargeSwitch === 0 ? 1 : 0;
+      const message = {
+        packId: packData.packId,
+        cradleId: packData.cradleId,
+        chgStatus: packData.CHGMOS_status,
+        dsgStatus: next,
+      };
+      try {
+        socket.send(JSON.stringify(message));
+        setDischargeSwitch(next);
+      } catch (error) {
+        console.error("Sending Falied", error);
       }
-      return next;
-    });
+    }
   };
 
   return (
@@ -70,8 +64,8 @@ const ButtonSwitch = ({ packData, socket }) => {
 };
 
 ButtonSwitch.propTypes = {
-  packData: PropTypes.object.isRequired,
-  socket: PropTypes.object.isRequired,
+  packData: PropTypes.object,
+  socket: PropTypes.object,
 };
 
 export default ButtonSwitch;

@@ -1,22 +1,25 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { clearData, resetData, setData, setIsConnected } from "../store/batteryData";
 
 export const useWebsocket = () => {
-  const [socket, setSocket] = useState(null);
   const dispatch = useDispatch();
+  const ws = useRef(null);
   const lastReceivedTimesRef = useRef({});
 
   //웹소켓 연결
   useEffect(() => {
-    // const ws = new WebSocket("ws://192.168.219.111:8030/ws");
-    const ws = new WebSocket("ws://3.35.111.150:8030/ws");
+    if (!ws.current) {
+      ws.current = new WebSocket("ws://192.168.219.115:8030/ws");
+      // const ws = new WebSocket("ws://3.35.111.150:8030/ws");
+    }
 
-    ws.onopen = () => {
+    ws.current.onopen = () => {
       dispatch(setIsConnected(true));
       console.log("server connected");
+      console.log("open readyState: ", ws.current.readyState);
     };
-    ws.onmessage = (event) => {
+    ws.current.onmessage = (event) => {
       let message;
       try {
         message = JSON.parse(event.data);
@@ -32,25 +35,24 @@ export const useWebsocket = () => {
         console.log("message received: ", event.data);
       }
     };
-    ws.onclose = () => {
+    ws.current.onclose = () => {
       dispatch(setIsConnected(false));
       dispatch(clearData());
       console.log("server disconnected");
+      console.log("close readyState: ", ws.current.readyState);
     };
-    ws.onerror = (error) => {
+    ws.current.onerror = (error) => {
       console.log("server error: ", error);
     };
 
-    if (socket !== null) {
+    if (ws.current !== null) {
       return;
     }
 
-    setSocket(ws);
-
     return () => {
-      ws.close();
+      ws.current.close();
     };
-  }, [dispatch, socket]);
+  }, [dispatch]);
 
   useEffect(() => {
     const checkDataInterval = setInterval(() => {
@@ -63,12 +65,12 @@ export const useWebsocket = () => {
           delete lastReceivedTimesRef.current[packId];
         }
       });
-    }, 3000);
+    }, 4000);
 
     return () => {
       clearInterval(checkDataInterval);
     };
   }, [dispatch]);
 
-  return { socket };
+  return { ws: ws.current };
 };
