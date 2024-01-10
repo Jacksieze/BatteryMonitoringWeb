@@ -7,7 +7,7 @@ export const useWebsocketData = () => {
 
   useEffect(() => {
     if (isConnected) {
-      console.log("Received data: ", packData);
+      // console.log("Received data: ", packData);
     }
   }, [isConnected, packData]);
 

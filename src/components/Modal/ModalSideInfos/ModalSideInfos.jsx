@@ -7,6 +7,7 @@ import ButtonSwitch from "./ButtonSwitch/ButtonSwitch";
 
 const ModalSideInfos = ({ packData, socket }) => {
   // 모달의 사이드 정보들을 렌더링하는 컴포넌트
+  if (!packData) return null;
   return (
     <Container>
       <ButtonSwitch packData={packData} socket={socket} />

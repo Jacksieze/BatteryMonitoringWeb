@@ -10,8 +10,8 @@ export const useWebsocket = () => {
   //웹소켓 연결
   useEffect(() => {
     if (!ws.current) {
-      ws.current = new WebSocket("ws://192.168.219.115:8030/ws");
-      // const ws = new WebSocket("ws://3.35.111.150:8030/ws");
+      // ws.current = new WebSocket("ws://192.168.219.116:8030/ws");
+      ws.current = new WebSocket("ws://3.35.111.150:8030/ws");
     }
 
     ws.current.onopen = () => {
@@ -58,14 +58,14 @@ export const useWebsocket = () => {
     const checkDataInterval = setInterval(() => {
       const currentTime = Date.now();
       Object.entries(lastReceivedTimesRef.current).forEach(([packId, lastTime]) => {
-        if (currentTime - lastTime > 5000) {
+        if (currentTime - lastTime > 8000) {
           const packDataKey = `packData${packId}`;
           console.log(`No data received for ${packId} in the last 5 seconds. Dispatching resetData.`);
           dispatch(resetData(packDataKey));
           delete lastReceivedTimesRef.current[packId];
         }
       });
-    }, 4000);
+    }, 5000);
 
     return () => {
       clearInterval(checkDataInterval);

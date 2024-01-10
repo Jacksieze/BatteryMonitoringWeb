@@ -9,8 +9,14 @@ const ModalHead = ({ handleModalClose, packData }) => {
   const [packId, setPackId] = useState("--");
 
   useEffect(() => {
-    setPackId(packData.packId);
+    if (packData && packData.packId) {
+      setPackId(packData.packId);
+    } else {
+      setPackId("--");
+    }
   }, [packData]);
+
+  if (!packData) return null;
 
   const status = (chargerStatus, loadStatus) => {
     if (chargerStatus === 1 && loadStatus === 0) {

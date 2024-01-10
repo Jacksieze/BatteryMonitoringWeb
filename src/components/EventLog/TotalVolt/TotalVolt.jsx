@@ -37,7 +37,6 @@ const TotalVolt = ({ packData }) => {
             maxDecimalDigits: 1,
           },
           tickLabels: {
-            // ticks: [{ value: 145.6 }, { value: 235.2 }],
             defaultTickValueConfig: {
               formatTextValue: (value) => `${value}V`,
               style: { fontSize: 16 },
@@ -46,7 +45,7 @@ const TotalVolt = ({ packData }) => {
           },
         }}
         arc={{
-          colorArray: ["#EA4228"],
+          colorArray: ["#eaa628"],
           subArcs: Array(100).fill({ length: 0.01 }),
           padding: 0.02,
           width: 0.3,

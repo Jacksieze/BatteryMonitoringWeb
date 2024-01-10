@@ -15,6 +15,14 @@ const Modal = ({ setIsModalOpen, packData, packId, socket }) => {
     };
   }, []);
 
+  useEffect(() => {
+    const currentPackData = packData[`packData${packId}`];
+    if (!currentPackData) {
+      alert("배터리 팩이 해제되었습니다.");
+      setIsModalOpen(false);
+    }
+  }, [packData, packId, setIsModalOpen]);
+
   const handleModalClose = () => {
     setIsModalOpen(false);
   };

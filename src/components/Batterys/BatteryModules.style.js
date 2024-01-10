@@ -33,6 +33,8 @@ const CradleBox = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 40px;
+  background-color: ${({ theme }) => theme.colors.tertiary};
+  border-radius: 10px;
 `;
 
 const Style = { Container, CradleWrapper, CradleBox };

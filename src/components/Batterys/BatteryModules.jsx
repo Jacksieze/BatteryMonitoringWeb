@@ -28,7 +28,7 @@ const BatteryModules = ({ handleModalOpen, packData }) => {
     handlePaginationClick(nextPage);
   }, 100);
 
-  const createBatteryCard = (cradleId, cradlePosition) => {
+  const createBatteryCard = (cradleId, cradlePosition, ref) => {
     let currentBatteryData = null;
     for (const key in packData) {
       if (Object.hasOwnProperty.call(packData, key)) {
@@ -42,12 +42,18 @@ const BatteryModules = ({ handleModalOpen, packData }) => {
 
     if (!currentBatteryData) {
       return (
-        <BatteryCard key={`${cradleId}-${cradlePosition}`} data={{}} handleModalOpen={() => handleModalOpen(null)} />
+        <BatteryCard
+          ref={ref}
+          key={`${cradleId}-${cradlePosition}`}
+          data={{}}
+          handleModalOpen={() => handleModalOpen(null)}
+        />
       );
     }
 
     return (
       <BatteryCard
+        ref={ref}
         key={`${cradleId}-${cradlePosition}`}
         data={currentBatteryData}
         handleModalOpen={() => handleModalOpen(currentBatteryData.packId)}
@@ -71,10 +77,14 @@ const BatteryModules = ({ handleModalOpen, packData }) => {
     <>
       <Style.Container onScroll={handleScroll}>
         <Style.CradleWrapper>
-          {createBatteryCard(1, 1)}
-          {createBatteryCard(1, 2)}
-          {createBatteryCard(2, 1)}
-          {createBatteryCard(2, 2)}
+          <Style.CradleBox>
+            {createBatteryCard(1, 1, cardRefs.current[0])}
+            {createBatteryCard(1, 2, cardRefs.current[1])}
+          </Style.CradleBox>
+          <Style.CradleBox>
+            {createBatteryCard(2, 1, cardRefs.current[2])}
+            {createBatteryCard(2, 2, cardRefs.current[3])}
+          </Style.CradleBox>
         </Style.CradleWrapper>
       </Style.Container>
       {windowWidth <= 500 && (

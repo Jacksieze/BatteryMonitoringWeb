@@ -22,6 +22,8 @@ const ModalCellVolt = ({ packData }) => {
     }
   }, [packData]);
 
+  if (!packData) return null;
+
   return (
     <Style.Container>
       <Style.CellContainer>

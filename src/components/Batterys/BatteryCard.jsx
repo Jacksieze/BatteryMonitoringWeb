@@ -16,11 +16,11 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
       case 2:
         return "R";
       default:
-        return "--";
+        return "-";
     }
   };
 
-  const cradlePosition = batteryData ? getCradlePosition(batteryData.cradlePosition) : "--";
+  const cradlePosition = batteryData && getCradlePosition(batteryData.cradlePosition);
 
   useEffect(() => {
     setTimeout(() => {
@@ -39,9 +39,10 @@ const BatteryCard = forwardRef(({ data, handleModalOpen }, ref) => {
   return (
     <Style.Container onClick={handleClick} ref={ref}>
       <Style.CardHeader>
-        <h3>배터리 {batteryData ? batteryData.packId : "--"}</h3>
+        <h3>Pack {batteryData && batteryData.packId ? batteryData.packId : "--"}</h3>
         <h4>
-          Cradle {batteryData.cradleId}-{cradlePosition}
+          Cradle {batteryData && batteryData.cradleId ? batteryData.cradleId : "-"}
+          {cradlePosition}
         </h4>
       </Style.CardHeader>
       <Style.CardBody>

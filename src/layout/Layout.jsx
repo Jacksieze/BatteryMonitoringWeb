@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Style from "./Layout.style";
 import Logo from "../assets/ci-blue-out.png";
 import MonitorPage from "../pages/MonitorPage";
@@ -10,6 +11,7 @@ const Layout = () => {
   const navigate = useNavigate();
   const { ws } = useWebsocket();
   const { isConnected, packData } = useWebsocketData();
+  const [isHover, setIsHover] = useState(false);
 
   const handleLogout = () => {
     // 로그아웃 핸들러
@@ -19,8 +21,6 @@ const Layout = () => {
     }
   };
 
-  // console.log("layout readyState:", socket.readyState);
-
   return (
     <>
       <Style.Header $connection={isConnected}>
@@ -29,8 +29,12 @@ const Layout = () => {
         </h1>
         <div>
           <p>{isConnected ? "Server Connected" : "Server Disconnected"}</p>
-          <button onClick={handleLogout}>
-            <box-icon name="exit" color="#ffffff"></box-icon>
+          <button
+            onClick={handleLogout}
+            onMouseOver={() => setIsHover(true)}
+            onMouseOut={() => setIsHover(false)}
+            alt="LogOut">
+            <box-icon name="exit" color={isHover ? "#053273" : "#ffffff"}></box-icon>
           </button>
         </div>
       </Style.Header>
