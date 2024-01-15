@@ -40,23 +40,12 @@ const BatteryModules = ({ handleModalOpen, packData }) => {
       }
     }
 
-    if (!currentBatteryData) {
-      return (
-        <BatteryCard
-          ref={ref}
-          key={`${cradleId}-${cradlePosition}`}
-          data={{}}
-          handleModalOpen={() => handleModalOpen(null)}
-        />
-      );
-    }
-
     return (
       <BatteryCard
         ref={ref}
         key={`${cradleId}-${cradlePosition}`}
-        data={currentBatteryData}
-        handleModalOpen={() => handleModalOpen(currentBatteryData.packId)}
+        data={currentBatteryData ? currentBatteryData : {}}
+        handleModalOpen={() => handleModalOpen(currentBatteryData ? currentBatteryData.packId : null)}
       />
     );
   };

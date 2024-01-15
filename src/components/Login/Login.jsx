@@ -15,6 +15,7 @@ const Login = () => {
     // 로그인 핸들러
     if (userId === "admin" && password === "test1234") {
       alert(`어서오세요 ${userId}님`);
+      localStorage.setItem("userId", userId);
       navigate("/monitor"); // 로그인 성공 시 모니터 페이지로 이동
     } else {
       alert("로그인 실패");

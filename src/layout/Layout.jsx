@@ -17,6 +17,7 @@ const Layout = () => {
     // 로그아웃 핸들러
     if (window.confirm("로그아웃 하시겠습니까?")) {
       alert("로그아웃 되었습니다.");
+      localStorage.removeItem("userId");
       navigate("/"); // 로그아웃 시 로그인 페이지로 이동
     }
   };
