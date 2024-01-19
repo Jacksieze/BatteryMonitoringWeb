@@ -17,8 +17,8 @@ const ButtonSwitch = ({ packData, socket }) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
       const next = chargeSwitch === 0 ? 1 : 0;
       const message = {
-        packId: packData.packId,
         cradleId: packData.cradleId,
+        packId: packData.packId,
         chgStatus: next,
         dsgStatus: packData.DSGMOS_status,
       };
@@ -35,8 +35,8 @@ const ButtonSwitch = ({ packData, socket }) => {
     if (socket && socket.readyState === WebSocket.OPEN) {
       const next = dischargeSwitch === 0 ? 1 : 0;
       const message = {
-        packId: packData.packId,
         cradleId: packData.cradleId,
+        packId: packData.packId,
         chgStatus: packData.CHGMOS_status,
         dsgStatus: next,
       };

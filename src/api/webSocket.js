@@ -10,7 +10,7 @@ export const useWebsocket = () => {
   //웹소켓 연결
   useEffect(() => {
     if (!ws.current) {
-      // ws.current = new WebSocket("ws://192.168.219.120:8030/ws");
+      // ws.current = new WebSocket("ws://192.168.219.122:8030/ws");
       ws.current = new WebSocket("ws://3.35.111.150:8030/ws");
     }
 
