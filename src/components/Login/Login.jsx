@@ -14,9 +14,15 @@ const Login = () => {
   const handleLogin = (e) => {
     // 로그인 핸들러
     if (userId === "admin" && password === "test1234") {
-      alert(`어서오세요 ${userId}님`);
       localStorage.setItem("userId", userId);
-      navigate("/monitor"); // 로그인 성공 시 모니터 페이지로 이동
+      if (localStorage.getItem("userId")) {
+        alert(`어서오세요 ${userId}님`);
+        navigate("/monitor"); // 로그인 성공 시 모니터 페이지로 이동
+      } else {
+        alert("로그인 실패");
+        setError("로그인 정보 저장에 실패했습니다. 다시 시도해주세요.");
+        e.preventDefault();
+      }
     } else {
       alert("로그인 실패");
       setError("아이디 또는 비밀번호를 다시 확인해주세요.");
